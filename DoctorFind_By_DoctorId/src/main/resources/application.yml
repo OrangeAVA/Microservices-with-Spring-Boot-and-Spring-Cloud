@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: doctor-find-by-id-service
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://host.docker.internal:3306/doctors <--- for docker
+    url: jdbc:mysql://localhost:3306/doctors
+    username: root
+    password: root123
+  jpa:
+    properties:
+      hibermate:
+        dialect:  org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+server:
+  port: 8085    
+eureka:
+  client:
+    serviceUrl:
+#      defaultZone : http://host.docker.internal:30429/eureka/   <--- for kuberenetes change port
+#      defaultZone : http://host.docker.internal:8761/eureka/   <--- for docker 
+      defaultZone : http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+#    healthcheck :
+#      enabled: true
+#management:
+#   health:
+#     readinessstate:
+#       enabled : true
+management:
+  tracing:
+    sampling:
+      probability: 1.0     
+  endpoints:
+    web:
+      exposure:
+#exposing all endpoints
+        include: "*"
+#exposes only listed endpoints
+#        include: beans, mappings, env
+        exclude: beans,mappings,env 
+  endpoint:
+    health:
+      show-details: always 
+  health:
+    db:
+      enabled: false
+      ignore-routing-data-sources : true
+logging:
+  pattern:
+    level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    
+        
+ 
+        
+        
+    
+        
+        
+     

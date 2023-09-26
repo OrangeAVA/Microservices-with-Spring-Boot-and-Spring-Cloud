@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: doctorfind-by-doctorid
+  labels:
+    app: doctorfind-by-doctorid
+    release: "0"
+spec:
+  containers:
+  - name: doctorfind-by-doctorid-container
+    image:  doctorfind_by_doctorid:1.0
+    ports:
+      - containerPort: 8085
+    imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: doctorfind-by-doctorid-service                 #name of the service
+  labels:
+    app: doctorfind-by-doctorid-service                    
+spec:
+  type : NodePort
+  ports:
+  - port: 8085
+  selector:
+    app: doctorfind-by-doctorid              #selecting the pod with lable value  

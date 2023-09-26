@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: doctor-find-by-id-service
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/doctors
+    username: root
+    password: mysql
+  jpa:
+    properties:
+      hibermate:
+        dialect:  org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+#server:
+#  port: 8085    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone : http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+#    healthcheck :
+#      enabled: true
+#management:
+#   health:
+#     readinessstate:
+#       enabled : true
+management:
+  tracing:
+    sampling:
+      probability: 1.0     
+  endpoints:
+    web:
+      exposure:
+#exposing all endpoints
+        include: "*"
+#exposes only listed endpoints
+#        include: beans, mappings, env
+        exclude: beans,mappings,env 
+  endpoint:
+    health:
+      show-details: always 
+  health:
+    db:
+      enabled: false
+      ignore-routing-data-sources : true
+logging:
+  pattern:
+    level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    
+        
+ 
+        
+        
+    
+        
+        
+     

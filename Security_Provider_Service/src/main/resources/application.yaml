@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: api-gateway-service   
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      routes:
+      - id: hospital_route
+        uri: http://localhost:9091/hospitals
+        predicates:
+        - Path=/hospitals/**
+        filters:
+      - id: doctor_route
+        uri: lb://doctor-find-by-id-service/doctors
+        predicates:
+        - Path=/doctors/**
+      - id: hospital_balanced_route
+        uri: http://localhost:9091/hospitals-balanced
+        predicates:
+        - Path=/hospitals-balanced/**
+      - id: hospital_balanced_gateway_route
+        uri: http://localhost:9091/hospitals-balanced-gateway
+        predicates:
+        - Path=/hospitals-balanced-gateway/**
+      - id: hospital_hospitals-feign_route
+        uri: http://localhost:9091/hospitals-feign
+        predicates:
+        - Path=/hospitals-feign/**
+      - id: hospital_hospitals-feign_interceptor_route
+        uri: http://localhost:9091/hospitals-feign-interceptor
+        predicates:
+        - Path=/hospitals-feign-interceptor/**
+      - id: hospital_hospitals-feign_relay_route
+        uri: http://localhost:9091/hospitals-feign-relay
+        predicates:
+        - Path=/hospitals-feign-relay/**
+        filters:
+        - TokenRelay=
+       
+ 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/security_demo
+          
+   
+        
+server:
+  port: 9097    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone : http://localhost:8761/eureka/    
+logging:
+    level:
+        reactor:
+            netty: INFO
+        org:
+            springframework:
+                cloud:
+                    gateway:  INFO 
+## adding below for the rety testing 
+#                   gateway:
+#                      filter:
+#                        factory: TRACE
+management: 
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  tracing:
+    sampling:
+      probability: 1.0   
+        
+
+
+    

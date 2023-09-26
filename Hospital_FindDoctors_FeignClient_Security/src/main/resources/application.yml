@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: hospital-find-doctors-in-hospital
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hospitals
+    username: root
+    password: mysql
+#  jpa:
+#    properties:
+#      hibermate:
+#        dialect:  org.hibernate.dialect.MySQL8Dialect
+#    show-sql: true
+#security:
+#  oauth2:
+#    client:    
+#       access-token-uri: http://localhost:8080/realms/security_demo/protocol/openid-connect/token
+#       client-id : security_provider_service_ID
+#       client-secret: 42kwMa0lYfc1h1M7bazC9k3IhKBdJ1MX
+#       grant-type: password_credentials
+
+
+server:
+  port: 9091    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone : http://localhost:8761/eureka/
+logging:
+  pattern:
+    level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"      
+management:
+  tracing:
+    sampling:
+      probability: 1.0    
+ 

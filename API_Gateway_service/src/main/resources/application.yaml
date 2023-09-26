@@ -1,0 +1,158 @@
+spring:
+#  main:
+#    web-application-type: reactive
+  application:
+    name: api-gateway-service   
+  cache:
+    type: caffeine
+    cache-names: doctors, my-cache
+  cloud:
+    gateway:
+      filter:
+        local-response-cache:
+          enabled: false
+      routes:
+      - id: hospital_route
+        uri: http://localhost:9091/hospitals
+        predicates:
+        - Path=/hospitals/**
+      - id: doctor_route
+        uri: lb://doctor-find-by-id-service/doctors
+        predicates:
+        - Path=/doctors/**
+#      - id: hospitals_balanced-route
+#        uri: http://localhost:9091/hospitals-balanced
+#        predicates:
+#        - Path=/hospitals-balanced/**
+#     
+#      - id: doctor_circuitbreaker_route
+#        uri: lb://doctor-find-by-id-service/doctors
+#        predicates:
+#        - Path=/doctors/**
+#        filters:
+#        - name: CircuitBreaker
+#          args:
+#            name: myCircuitBreaker
+#            fallbackUri: forward:/dummy   # make sure to have  cloud.gateway.filter.local-response-cache.enabled as false 
+#      - id: doctor_retry
+#        uri: lb://doctor-find-by-id-service/doctors
+#        predicates:
+#        - Path=/doctors/**
+#        filters:
+#        - name: Retry
+#          args:
+#            retries: 3
+#            statuses: INTERNAL_SERVER_ERROR
+#            methods: GET   # we can add POST
+#            backoff:
+#              firstBackoff: 10ms
+#              maxBackoff: 50ms
+#              factor: 2
+#              basedOnPreviousValue: false
+#         
+#            
+
+#      - id: after_route
+#        uri: lb://doctor-find-by-id-service/doctors
+#        predicates:
+#        - After=2023-04-02T20:16:10.420+05:30[Asia/Kolkata]
+#      - id: before_route
+#        uri: lb://doctor-find-by-id-service/doctors
+#        predicates:
+#        - Before=2023-04-02T20:16:10.420+05:30[Asia/Kolkata]
+#      - id: between_route
+#        uri: lb://doctor-find-by-id-service/doctors
+#        predicates:
+#        - Between=2023-04-02T20:16:10.420+05:30[Asia/Kolkata], 2023-04-30T20:16:10.420+05:30[Asia/Kolkata]
+#      - id: cookie_route
+#        uri: lb://doctor-find-by-id-service/doctors
+#        predicates:
+#        - Cookie=book_name, Micro*
+#       - id: doctor_route_add_header
+#         uri: lb://doctor-find-by-id-service/doctors
+#         predicates:
+#         - Path=/doctors/**
+#         filters:
+#         - AddRequestHeader= sort,Medicine
+#       - id: doctor_route_add_header_if_not_present
+#         uri: lb://doctor-find-by-id-service/doctors
+#         predicates:
+#         - Path=/doctors/**
+#         filters:
+#         - AddRequestHeadersIfNotPresent= sort:Medicine
+#         
+#       - id: doctor_route_add_requestparameter
+#         uri: lb://doctor-find-by-id-service/doctors
+#         predicates:
+#         - Path=/doctors-values/**
+#         filters:
+#         - AddRequestParameter= value, Microservices
+#       - id: doctor_route_add_response_header
+#         uri: lb://doctor-find-by-id-service/doctors
+#         predicates:
+#         - Path=/doctors/{doctorId}
+#         filters:
+#         - AddResponseHeader= header_value, this is a header value
+#        - id: doctor_local_response_cache 
+#          uri: lb://doctor-find-by-id-service/doctors
+#          predicates:
+#          - Path=/doctors/**
+#          filters:
+#          - LocalResponseCache=30m,500MB
+#        - id: remove_request_header_route
+#          uri: lb://doctor-find-by-id-service/doctors
+#          predicates:
+#          - Path=/doctors/**
+#          filters:
+#          - AddRequestHeadersIfNotPresent= sort:Medicine
+#          - RemoveRequestHeader=sort
+#        - id: remove_request_parameter_route
+#          uri: lb://doctor-find-by-id-service/doctors-values
+#          predicates:
+#          - Path=/doctors-values/**
+#          filters:
+#          - RemoveRequestParameter=value
+#        - id: rewritepath_route
+#          uri: lb://doctor-find-by-id-service
+#          predicates:
+#          - Path=/mydoctors/**
+#          filters:
+#          - RewritePath=/mydoctors/?(?<segment>.*), /doctors/$\{segment}
+
+    
+         
+         
+server:
+  port: 9097    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone : http://localhost:8761/eureka/    
+logging:
+    level:
+        reactor:
+            netty: INFO
+        org:
+            springframework:
+                cloud:
+#                    gateway:  INFO 
+# adding below for testing  the rety 
+                   gateway:
+                      filter:
+                        factory: TRACE
+management: 
+  server:
+    port: 8080 
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  tracing:
+    sampling:
+      probability: 1.0   
+        
+    
+    

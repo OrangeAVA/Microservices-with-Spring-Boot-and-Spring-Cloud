@@ -1,0 +1,49 @@
+#application.properties file configuration
+
+#spring.application.name=hospital-find-doctors-in-hospital
+#server.port= 9091
+#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+#spring.datasource.url=jdbc:mysql://localhost:3306/hospitals
+#spring.datasource.username=root
+#spring.datasource.password=mysql
+
+#eureka.client.serviceUrl.defaultZone= http://localhost:8761/eureka/
+#feign.client.config.default.connectTimeout=10000
+#feign.client.config.default.readTimeout: 50000
+
+
+spring:
+  application:
+    name: hospital-find-doctors-in-hospital
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hospitals
+    username: root
+    password: mysql
+  jpa:
+    properties:
+      hibermate:
+        dialect:  org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+server:
+  port: 9091    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone : http://localhost:8761/eureka/
+logging:
+  pattern:
+    level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"      
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 10000
+#        readTimeout : 50000
+                  
+ 
+

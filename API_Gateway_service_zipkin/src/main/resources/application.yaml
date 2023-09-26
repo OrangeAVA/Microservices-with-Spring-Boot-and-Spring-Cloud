@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: api-gateway-service   
+  cloud:
+    gateway:
+      routes:
+      - id: hospital_route
+        uri: http://localhost:9091/hospitals
+        predicates:
+        - Path=/hospitals/**
+      - id: doctor_route
+        uri: lb://doctor-find-by-id-service/doctors
+        predicates:
+        - Path=/doctors/**  
+      - id: hospital_route_balnced
+        uri: http://localhost:9091/hospitals-balanced
+        predicates:
+        - Path=/hospitals-balanced/**    
+      - id: hospital_route_gateway
+        uri: http://localhost:9091/hospitals-balanced-gateway
+        predicates:
+        - Path=/hospitals-balanced-gateway/** 
+      - id: hospital_route_gateway
+        uri: http://localhost:9091/hospitals-feign
+        predicates:
+        - Path=/hospitals-feign/**    
+server:
+  port: 9097    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone : http://localhost:8761/eureka/    
+logging:
+    pattern:
+      level: "%5p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"      
+   
+management: 
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  tracing:
+    sampling:
+      probability: 1.0   
+ 
+        
+    
+    
