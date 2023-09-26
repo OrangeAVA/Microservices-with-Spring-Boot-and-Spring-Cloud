@@ -26,3 +26,10 @@ Whether you're new to microservices or seeking to enhance your existing expertis
 ● Implement effective communication using RestTemplate and Feign Client.
 
 ● Implement inter-service communication, secure microservices, and leverage container-based deployment with Docker.
+
+## More products
+1. [Practical Data Analytics For BFSI](https://orangeava.com/products/practical-data-analytics-for-bfsi)
+
+2. [Ultimate Tailwind CSS Handbook](https://orangeava.com/products/ultimate-tailwind-css-handbook)
+
+3. [Hands-On ML Projects With OpenCV](https://orangeava.com/products/hands-on-ml-projects-with-opencv)
